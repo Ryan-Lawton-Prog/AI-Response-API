@@ -156,7 +156,7 @@ def predict():
     generated = ''
     generated += sentence
 
-    for i in range(length):
+    for _ in range(length):
             x_pred = np.zeros((1, maxlen, charlen))
             for t, char in enumerate(sentence):
                 x_pred[0, t, char_indices[char]] = 1.

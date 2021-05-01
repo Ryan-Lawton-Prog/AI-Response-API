@@ -85,7 +85,7 @@ class TrainModel():
 
             char_indices = self.char_indices
 
-            for i in range(400):
+            for _ in range(400):
                 x_pred = np.zeros((1, self.maxlen, len(self.chars)))
                 for t, char in enumerate(sentence):
                     x_pred[0, t, char_indices[char]] = 1.
