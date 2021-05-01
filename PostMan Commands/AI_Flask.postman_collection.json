@@ -1,0 +1,389 @@
+{
+	"info": {
+		"_postman_id": "bff50480-fc30-4258-a6fa-5de071e38c5f",
+		"name": "AI_Flask",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "ai",
+			"item": [
+				{
+					"name": "Upload dataset",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "",
+									"type": "file",
+									"src": "/C:/Users/Lawyer/Desktop/Git/AI-Response-API/datafiles/shakespeare.txt"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:5000/ai/upload_dataset",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"ai",
+								"upload_dataset"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get datasets",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/ai/get_datasets",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"ai",
+								"get_datasets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Clear datasets",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "key",
+									"value": "delete",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:5000/ai/clear_datasets",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"ai",
+								"clear_datasets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Train model",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "dataset",
+									"value": "shakespeare.txt",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:5000/ai/train_dataset",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"ai",
+								"train_dataset"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Train model epoch",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "dataset",
+									"value": "shakespeare.txt",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:5000/ai/train_dataset",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"ai",
+								"train_dataset"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get models",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": null
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "key",
+									"value": "delete",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:5000/ai/clear_models",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"ai",
+								"clear_models"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Predict model - random",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "length",
+									"value": "500",
+									"type": "text"
+								},
+								{
+									"key": "diversity",
+									"value": "0.2",
+									"type": "text"
+								},
+								{
+									"key": "hash",
+									"value": "bb3f3e4271c6691a3d9176ee33009fccfe5830141205185e8b1c22b57c283a2ad1f08d6ce1a92dc75d0af03b8dea7995f21f08d6ee31b338fa185be200f9a608",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:5000/ai/predict",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"ai",
+								"predict"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Predict model - seed",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "length",
+									"value": "500",
+									"type": "text"
+								},
+								{
+									"key": "diversity",
+									"value": "0.2",
+									"type": "text"
+								},
+								{
+									"key": "hash",
+									"value": "bb3f3e4271c6691a3d9176ee33009fccfe5830141205185e8b1c22b57c283a2ad1f08d6ce1a92dc75d0af03b8dea7995f21f08d6ee31b338fa185be200f9a608",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:5000/ai/predict",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"ai",
+								"predict"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Create user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "Lawyer",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "badpassword",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:5000/add_user",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"add_user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get user",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/get_user?id=608cb1ab7ff987ccf44e4922",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"get_user"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "608cb1ab7ff987ccf44e4922"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Clear all users",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "key",
+							"value": "delete",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:5000/clear_users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"clear_users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		}
+	]
+}
