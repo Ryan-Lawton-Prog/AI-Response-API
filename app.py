@@ -1,25 +1,15 @@
 from flask import Flask, request, Response
-import pymongo
-from bson.objectid import ObjectId
-from bson import json_util
-import json
-import hashlib
-from bcrypt import gensalt
+
+from helper_files.helpers import parse_json, hash_string, gensalt, ObjectId
+import helper_files.helpers
+from ai import ai
+from config import MongoDataBase
 
 app = Flask(__name__)
+app.register_blueprint(ai)
 
-mongo_client = pymongo.MongoClient("mongodb://localhost:27017/")
-
-mongod = mongo_client["users"]
-users = mongod["users"]
-
-delete_key = 'b339da421f0551238dcba7010211444ece30894857d608deb905babd047fb0f17a92e98287287138b4adac05e55351c3ee6aa71d1a4a99333a652f256e998dd9'
-
-def parse_json(data):
-    return json.loads(json_util.dumps(data))
-
-def hash_string(password):
-    return hashlib.sha512(password.encode('utf-8')).hexdigest()
+DB = MongoDataBase()
+users = DB.get_collection("users")
 
 @app.route('/')
 def root():
@@ -35,6 +25,10 @@ def create_user():
     user['username'] = request.form['username']
     user['password'] = password
     user['salt'] = salt
+
+    if users.find_one({'username': user['username']}):
+        return Response(status=409)
+
     return str(users.insert_one(user).inserted_id)
 
 @app.route('/get_user', methods=['GET'])
@@ -71,7 +65,7 @@ def login():
 
 @app.route('/clear_users', methods=['DELETE'])
 def clear_users():
-    if hash_string(request.form['key']) == delete_key:
+    if hash_string(request.form['key']) == DB.delete_key:
         users.delete_many({})
         return Response(status=200)
     return Response(status=401)
