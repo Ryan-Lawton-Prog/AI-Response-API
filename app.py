@@ -44,4 +44,6 @@ def get_all_users():
 
     return list_of_users
 
-app.run()
+
+if __name__ == '__main__':
+    app.run(debug=True, use_reloader=True)
