@@ -7,7 +7,8 @@ import os
 import jwt
 import datetime
 
-SECRET_KEY = os.getenv('SECRET_KEY', 'special_key')
+os.environ['SECRET_KEY'] = str(os.urandom(24))
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 def parse_json(data):
     return json.loads(json_util.dumps(data))
@@ -15,15 +16,15 @@ def parse_json(data):
 def hash_string(password):
     return hashlib.sha512(password.encode('utf-8')).hexdigest()
 
-@staticmethod
 def decode_auth_token(auth_token):
     """
     Decodes the auth token
     :param auth_token:
     :return: integer|string
     """
+    payload = None
     try:
-        payload = jwt.decode(auth_token, SECRET_KEY)
+        payload = jwt.decode(auth_token, SECRET_KEY, algorithms="HS256")
         return payload['sub']
     except jwt.ExpiredSignatureError:
         return 'Signature expired. Please log in again.'
