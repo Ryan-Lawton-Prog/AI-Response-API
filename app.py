@@ -67,7 +67,6 @@ def login():
     password = hash_string(request.json['password'] + user['salt'])
 
     if password == user['password']:
-        print(user['_id'])
         token = encode_auth_token(user['_id'])
         print(token)
         return {"token":token}, 200
@@ -82,8 +81,9 @@ def clear_users():
 
 @app.route('/auth_user', methods=['POST'])
 def auth_user():
-    id = decode_auth_token(request.json['token'])
-    user = users.find_one({'_id':bin(id)})
+    _id = decode_auth_token(request.json['token'])
+    if _id == ('Signature expired. Please log in again.') or _id == ('Invalid token. Please log in again.'): return {"error":_id}, 404
+    user = users.find_one({'_id': ObjectId(_id)})
     if user:
         return {}, 201
     return {}, 404
