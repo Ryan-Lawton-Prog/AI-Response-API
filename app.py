@@ -20,16 +20,16 @@ def create_user():
     user = {}
 
     salt = str(gensalt())
-    password = hash_string(request.form['password'] + salt)
+    password = hash_string(request.json['password'] + salt)
 
-    user['username'] = request.form['username']
+    user['username'] = request.json['username']
     user['password'] = password
     user['salt'] = salt
 
     if users.find_one({'username': user['username']}):
-        return Response(status=409)
+        return {}, 409
 
-    return str(users.insert_one(user).inserted_id)
+    return {"id":str(users.insert_one(user).inserted_id)}
 
 @app.route('/get_user', methods=['GET'])
 def get_user():
@@ -40,7 +40,7 @@ def get_user():
     )
     if json_data:
         return json_data
-    return Response(status=401)
+    return {}, 401
 
 @app.route('/get_all_users', methods=['GET'])
 def get_all_users():
@@ -53,22 +53,25 @@ def get_all_users():
 
     return list_of_users
 
-@app.route('/login', methods=['GET'])
+@app.route('/login', methods=['POST'])
 def login():
-    user = users.find_one({'username': request.form['username']})
+    user = users.find_one({'username': request.json['username']})
+
+    if not user:
+        return {}, 401
     
-    password = hash_string(request.form['password'] + user['salt'])
+    password = hash_string(request.json['password'] + user['salt'])
 
     if password == user['password']:
-        return Response(status=200)
-    return Response(status=401)
+        return {}, 200
+    return {}, 401
 
 @app.route('/clear_users', methods=['DELETE'])
 def clear_users():
-    if hash_string(request.form['key']) == DB.delete_key:
+    if hash_string(request.json['key']) == DB.delete_key:
         users.delete_many({})
-        return Response(status=200)
-    return Response(status=401)
+        return {}, 200
+    return {}, 401
 
 
 if __name__ == '__main__':
