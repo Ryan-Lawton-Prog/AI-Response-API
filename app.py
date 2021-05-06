@@ -33,7 +33,7 @@ def create_user():
 
     token = encode_auth_token(users.insert_one(user).inserted_id)
 
-    return {"token":token}
+    return {"token":token}, 201
 
 @app.route('/get_user', methods=['GET'])
 def get_user():
@@ -79,6 +79,14 @@ def clear_users():
         users.delete_many({})
         return {}, 200
     return {}, 401
+
+@app.route('/auth_user', methods=['POST'])
+def auth_user():
+    id = decode_auth_token(request.json['token'])
+    user = users.find_one({'_id':bin(id)})
+    if user:
+        return {}, 201
+    return {}, 404
 
 
 if __name__ == '__main__':
