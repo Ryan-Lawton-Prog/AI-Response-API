@@ -1,9 +1,11 @@
 from flask import Flask, request, Response
 
-from helper_files.helpers import parse_json, hash_string, gensalt, ObjectId
+from helper_files.helpers import parse_json, hash_string, gensalt, ObjectId, decode_auth_token, encode_auth_token
 import helper_files.helpers
 from ai import ai
 from config import MongoDataBase
+
+import os
 
 app = Flask(__name__)
 app.register_blueprint(ai)
@@ -29,13 +31,15 @@ def create_user():
     if users.find_one({'username': user['username']}):
         return {}, 409
 
-    return {"id":str(users.insert_one(user).inserted_id)}
+    token = encode_auth_token(users.insert_one(user).inserted_id)
+
+    return {"token":token}
 
 @app.route('/get_user', methods=['GET'])
 def get_user():
     json_data = parse_json(
         users.find_one(
-            {'_id': ObjectId(request.form['id'])}
+            {'_id': ObjectId(request.json['id'])}
         )
     )
     if json_data:
@@ -63,7 +67,10 @@ def login():
     password = hash_string(request.json['password'] + user['salt'])
 
     if password == user['password']:
-        return {}, 200
+        print(user['_id'])
+        token = encode_auth_token(user['_id'])
+        print(token)
+        return {"token":token}, 200
     return {}, 401
 
 @app.route('/clear_users', methods=['DELETE'])
