@@ -12,7 +12,7 @@ import numpy as np
 import random
 import os
 
-ai = Blueprint('ai', __name__)
+ai_endpoint = Blueprint('ai_endpoint', __name__)
 
 DB = MongoDataBase()
 datasets = DB.get_collection("datasets")
@@ -20,11 +20,11 @@ models = DB.get_collection("models")
 
 delete_key = 'b339da421f0551238dcba7010211444ece30894857d608deb905babd047fb0f17a92e98287287138b4adac05e55351c3ee6aa71d1a4a99333a652f256e998dd9'
 
-@ai.route('/ai/', methods=['GET'])
+@ai_endpoint.route('/ai/', methods=['GET'])
 def AI():
     return 'THIS IS AI'
 
-@ai.route('/ai/upload_dataset', methods=['POST'])
+@ai_endpoint.route('/ai/upload_dataset', methods=['POST'])
 def upload_dataset():
     if 'file' not in request.files:
         return Response(status=400)
@@ -43,7 +43,7 @@ def upload_dataset():
     return Response(status=201)
 
 
-@ai.route('/ai/get_datasets', methods=['GET'])
+@ai_endpoint.route('/ai/get_datasets', methods=['GET'])
 def get_datasets():
     list_of_datasets = {}
     for i in datasets.find():
@@ -54,14 +54,14 @@ def get_datasets():
 
     return list_of_datasets
 
-@ai.route('/ai/clear_datasets', methods=['DELETE'])
+@ai_endpoint.route('/ai/clear_datasets', methods=['DELETE'])
 def clear_datasets():
     if hash_string(request.form['key']) == delete_key:
         datasets.delete_many({})
         return Response(status=200)
     return Response(status=401)
 
-@ai.route('/ai/train_dataset', methods=['POST'])
+@ai_endpoint.route('/ai/train_dataset', methods=['POST'])
 def train_datasets():
     dataset = datasets.find_one({'name':request.form['dataset']})
 
@@ -101,7 +101,7 @@ def train_datasets():
 
     return details
 
-@ai.route('/ai/get_models', methods=['GET'])
+@ai_endpoint.route('/ai/get_models', methods=['GET'])
 def get_models():
     list_of_models = {}
     for i in models.find():
@@ -112,7 +112,7 @@ def get_models():
 
     return list_of_models
 
-@ai.route('/ai/clear_models', methods=['DELETE'])
+@ai_endpoint.route('/ai/clear_models', methods=['DELETE'])
 def clear_models():
     if hash_string(request.form['key']) == delete_key:
         for i in models.find():
@@ -122,7 +122,7 @@ def clear_models():
         return Response(status=200)
     return Response(status=401)
 
-@ai.route('/ai/predict', methods=['GET'])
+@ai_endpoint.route('/ai/predict', methods=['GET'])
 def predict():
     length = int(request.form['length'])
     diversity = float(request.form['diversity'])

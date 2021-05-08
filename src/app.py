@@ -2,13 +2,15 @@ from flask import Flask, request, Response
 
 from helper_files.helpers import parse_json, hash_string, gensalt, ObjectId, decode_auth_token, encode_auth_token
 import helper_files.helpers
-import ai_endpoint
+from ai_endpoint import ai_endpoint
+from blog_endpoint import blog_endpoint
 from config import MongoDataBase
 
 import os
 
 app = Flask(__name__)
 app.register_blueprint(ai_endpoint)
+app.register_blueprint(blog_endpoint)
 
 DB = MongoDataBase()
 users = DB.get_collection("users")
