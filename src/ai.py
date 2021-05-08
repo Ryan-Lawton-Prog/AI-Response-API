@@ -3,7 +3,7 @@ from flask_accept import accept
 
 from helper_files.helpers import parse_json, hash_string
 from config import MongoDataBase
-from ai_helpers.train import TrainModel, sample
+from containers.ai_endpoints.train import TrainModel, sample
 from keras.models import load_model
 
 import pickle
