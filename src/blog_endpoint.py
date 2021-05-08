@@ -3,6 +3,7 @@ from flask_accept import accept
 
 from helper_files.helpers import parse_json, hash_string
 from config import MongoDataBase
+import datetime
 import time
 
 blog_endpoint = Blueprint('blog_endpoint', __name__)
@@ -34,10 +35,10 @@ def add_blog():
     blog['title'] = request.json['title']
     blog['subtitle'] = request.json['subtitle']
     blog['author'] = request.json['author']
-    blog['date'] = time.time()
+    blog['date'] = datetime.datetime.now().strftime("%B %d, %Y")
+    blog['time'] = time.time()
     blog['body'] = request.json['body']
+    _id = str(blogs.insert_one(blog))
     print(blog)
 
-    _id = str(blogs.insert_one(blog))
-    print(_id)
-    return {'_id':_id}, 201
+    return {'_id': _id}, 201
