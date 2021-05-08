@@ -1,0 +1,12 @@
+[build-system]
+requires = [
+    "setuptools>=42",
+    "wheel",
+    "flask",
+    "pymongo",
+    "keras",
+    "numpy",
+    "pickle",
+    "tensorflow_core.keras"
+]
+build-backend = "setuptools.build_meta"
