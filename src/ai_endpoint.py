@@ -27,20 +27,16 @@ def AI():
 @ai_endpoint.route('/ai/upload_dataset', methods=['POST'])
 def upload_dataset():
     if 'file' not in request.files:
-        return Response(status=400)
+        return {}, 400
 
     text_file = request.files['file']
     file_name = text_file.filename
     
     if file_name == '' or text_file.content_type != 'text/plain':
-        return Response(status=400)
+        return {}, 400
 
-    
-    if datasets.find_one({'name': file_name}):
-        return Response(status=409)
-    
     datasets.insert_one({'name':file_name, 'text': str(text_file.read())}).inserted_id
-    return Response(status=201)
+    return {}, 201
 
 
 @ai_endpoint.route('/ai/get_datasets', methods=['GET'])
@@ -52,21 +48,21 @@ def get_datasets():
         del i['text']
         list_of_datasets[str(ID)] = i
 
-    return list_of_datasets
+    return list_of_datasets, 201
 
 @ai_endpoint.route('/ai/clear_datasets', methods=['DELETE'])
 def clear_datasets():
     if hash_string(request.form['key']) == delete_key:
         datasets.delete_many({})
-        return Response(status=200)
-    return Response(status=401)
+        return {}, 200
+    return {}, 401
 
 @ai_endpoint.route('/ai/train_dataset', methods=['POST'])
 def train_datasets():
     dataset = datasets.find_one({'name':request.form['dataset']})
 
     if not dataset:
-        return Response(status=401)
+        return {}, 401
 
     epochs = None
     if 'epochs' in request.form:
@@ -99,7 +95,7 @@ def train_datasets():
         'time': created_time
     }
 
-    return details
+    return details, 201
 
 @ai_endpoint.route('/ai/get_models', methods=['GET'])
 def get_models():
@@ -110,7 +106,7 @@ def get_models():
         del i['text']
         list_of_models[str(ID)] = i
 
-    return list_of_models
+    return list_of_models, 201
 
 @ai_endpoint.route('/ai/clear_models', methods=['DELETE'])
 def clear_models():
@@ -119,8 +115,8 @@ def clear_models():
             os.remove('ai_helpers/models/'+i['hash'])
 
         models.delete_many({})
-        return Response(status=200)
-    return Response(status=401)
+        return {}, 200
+    return {}, 401
 
 @ai_endpoint.route('/ai/predict', methods=['GET'])
 def predict():
@@ -167,7 +163,7 @@ def predict():
 
             generated += next_char
             sentence = sentence[1:] + next_char
-    return generated
+    return generated, 201
 
 
 
